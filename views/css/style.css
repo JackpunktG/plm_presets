@@ -1,0 +1,31 @@
+body {
+  background-color: powderblue;
+}
+h1 {
+  color: blue;
+  text-align: center;
+}
+h2 {
+    color: brown;
+    text-align: center;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+     
+
+}
+th, td {
+  background-color: powderblue;
+}
+#stdInput{
+  width: 18em;
+}
+.container {
+  display: grid;
+  grid-template-columns: 100px auto auto;
+                        
+  padding: 5px;
+  gap: 5px;  
+}
