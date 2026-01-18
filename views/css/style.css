@@ -29,3 +29,12 @@ th, td {
   padding: 5px;
   gap: 5px;  
 }
+.center {
+  display: grid;
+  text-align: center; /* Centers inline content within grid items */
+  grid-template-columns: auto;
+  padding: 5px;
+  gap: 5px;
+  justify-items: center; /* Centers grid items horizontally */
+  align-items: center; /* Centers grid items vertically */
+}

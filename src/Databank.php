@@ -2,9 +2,11 @@
 namespace plm_presets;
 require_once __DIR__ . '/obj.php'; 
 
+
+    
 class Databank
 {
-    private $conn;     
+    public $conn;     
 
     public function __construct(string $username, string $password, string $database)
     {
@@ -24,7 +26,7 @@ class Databank
 
     function test_connection() : bool
     {
-        return (bool)$this->conn;
+        return $this->conn == NULL ? false : true;
     }
         
     function error_msg() : string
@@ -219,3 +221,53 @@ class Databank
         return $lfos;
     }
 }
+
+class User
+{
+    public string $alias;
+    public bool $verified;
+
+    public function __construct(string $alias, string $password, Databank $db, bool $newUser = false)
+    {
+        $this->alias = $alias;
+        $this->verified = false;
+        if ($newUser)
+        {
+            if($this->new_user($db, $password)) 
+                $this->verified = true;
+        }
+        else
+        {
+            if ($this->verify_user($db, $password))
+                $this->verified = true;
+       }
+    }
+
+    public function new_user(Databank $db, string $password) : bool
+    {
+        $pw_hash = password_hash($password, PASSWORD_BCRYPT, ["cost" => 15]); 
+        $result = pg_query_params($db->conn, "INSERT INTO users(alias, pw_hash) VALUES($1, $2)", [$this->alias, $pw_hash]);
+        
+        if (!$result) 
+            return false;
+        else true;
+    }
+
+    public function verify_user(Databank $db, string $password) : bool
+    {
+        $result = pg_query_params($this->conn, "SELECT pw_hash FROM users WHERE alias = $1", [$this->alias]);
+        
+        if (!$result)
+            return false;
+
+        $row = pg_fetch_assoc($result);
+        if (!$row)
+            return false;
+            
+        $hash = ($row['pw_hash']);
+
+        echo "hash from database: $hash<br>";
+        
+        return password_verify($password, $hash);
+    }
+}   

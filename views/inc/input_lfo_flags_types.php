@@ -7,7 +7,7 @@
     </div>
     <div>
         <h3>Input new LFO type</h3>
-        <form method="POST" action="src/input_processing.php">
+        <form method="POST" action="src/lfo_input_processing.php">
         <input type="text" name="lfo_type" placeholder="flag type" id="stdInput"><br>
         <textarea name="lfo_config_notes" placeholder="notes" cols="40" rows="5"></textarea><br>
         <button type="reset">Clear</button>
