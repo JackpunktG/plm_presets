@@ -60,7 +60,7 @@ class Databank
         
     function insert_lfo_type(LFO_Type $lfo_type) : bool
     {
-        $result = pg_query_params($this->conn, "INSERT INTO lfo_types VALUES($1, $2) RETURNING id", [$lfo_type->type, $lfo_type->config_notes]);
+        $result = pg_query_params($this->conn, "INSERT INTO lfo_type (type, config_notes) VALUES($1, $2) RETURNING id", [$lfo_type->type, $lfo_type->config_notes]);
         
         if (!$result)
             return false;
@@ -72,8 +72,8 @@ class Databank
 
     function insert_lfo_flag(LFO_Flags $lfo_flag) : bool
     {
-        $result = pg_query_params($this->conn, "INSERT INTO lfo_flags VALUES($1, $2, $3) RETURNING id", [$lfo_flag->flag, $lfo_flag->binary_value, $lfo_flag->config_notes]);
-        
+        $result = pg_query_params($this->conn, "INSERT INTO lfo_flags (flag, binary_value, config_notes) VALUES($1, $2, $3) RETURNING id", [$lfo_flag->flag, $lfo_flag->binary_value, $lfo_flag->config_notes]);
+
         if (!$result)
             return false;
 
@@ -227,35 +227,38 @@ class User
     public string $alias;
     public bool $verified;
 
-    public function __construct(string $alias, string $password, Databank $db, bool $newUser = false)
+    public function __construct(string $alias, string $password, bool $newUser = false)
     {
         $this->alias = $alias;
         $this->verified = false;
         if ($newUser)
         {
-            if($this->new_user($db, $password)) 
+            if($this->new_user($password)) 
                 $this->verified = true;
         }
         else
         {
-            if ($this->verify_user($db, $password))
+            if ($this->verify_user($password))
                 $this->verified = true;
        }
     }
 
-    public function new_user(Databank $db, string $password) : bool
+    public function new_user(string $password) : bool
     {
+        $db = new Databank($_ENV['DB_USER'], $_ENV['DB_PW'], $_ENV['DB_NAME']);
         $pw_hash = password_hash($password, PASSWORD_BCRYPT, ["cost" => 15]); 
         $result = pg_query_params($db->conn, "INSERT INTO users(alias, pw_hash) VALUES($1, $2)", [$this->alias, $pw_hash]);
         
         if (!$result) 
             return false;
-        else true;
+        else 
+            return true;
     }
 
-    public function verify_user(Databank $db, string $password) : bool
+    public function verify_user(string $password) : bool
     {
-        $result = pg_query_params($this->conn, "SELECT pw_hash FROM users WHERE alias = $1", [$this->alias]);
+        $db = new Databank($_ENV['DB_USER'], $_ENV['DB_PW'], $_ENV['DB_NAME']);
+        $result = pg_query_params($db->conn, "SELECT pw_hash FROM users WHERE alias = $1", [$this->alias]);
         
         if (!$result)
             return false;
@@ -266,8 +269,7 @@ class User
             
         $hash = ($row['pw_hash']);
 
-        echo "hash from database: $hash<br>";
-        
         return password_verify($password, $hash);
+        
     }
 }   

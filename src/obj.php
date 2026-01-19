@@ -89,15 +89,23 @@ class LFO_Type
 
     public static function array_to_table(array $types) : void
     {
+        echo "<form method='POST' action='/src/input_processing.php'>";
         echo "<table><tr><th>type</th><th>config_notes</th></tr>";
         foreach($types as $type)
         {
+            $config = explode("\n", $type->config_notes);
             echo "<tr>";
             echo "<td>$type->type</td>";
-            echo "<td>$type->config_notes</td>";
+            echo "<td>";
+            foreach($config as $line)
+                echo "$line<br>";
+            echo "</td>";
+            echo "<td><button class='buttonOrange' type='submit' name='EDIT_,lfo_type,{$type->id}'>edit</button></td>";
+            echo "<td><button class='buttonRed' type='submit' name='DELETE_,lfo_type,{$type->id}'>X</button></td>";
             echo "</tr>";
         }
         echo "</table>";
+        echo "</form>";
     }
 }
 
@@ -118,16 +126,24 @@ class LFO_Flags
 
     public static function array_to_table(array $flags) : void
     {
+        echo "<form method='POST' action='/src/input_processing.php'>";
         echo "<table><tr><th>flag</th><th>binary_value</th><th>config_notes</th></tr>";
         foreach($flags as $flag)
         {
+            $config = explode("\n", $flag->config_notes);
             echo "<tr>";
             echo "<td>$flag->flag</td>";
             echo "<td>$flag->binary_value</td>";
-            echo "<td>$flag->config_notes</td>";
+            echo "<td>";
+            foreach($config as $line)
+                echo "$line<br>";
+            echo "</td>";
+            echo "<td><button class='buttonOrange' type='submit' name='EDIT_,lfo_flags,{$flag->id}'>edit</button></td>";
+            echo "<td><button class='buttonRed' type='submit' name='DELETE_,lfo_flags,{$flag->id}'>X</button></td>";
             echo "</tr>";
         }
         echo "</table>";
+        echo "</form>";
     }
 }
 

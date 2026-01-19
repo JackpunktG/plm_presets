@@ -7,7 +7,7 @@
     </div>
     <div>
         <h3>Input new LFO type</h3>
-        <form method="POST" action="src/lfo_input_processing.php">
+        <form method="POST" action="input_processing.php">
         <input type="text" name="lfo_type" placeholder="flag type" id="stdInput"><br>
         <textarea name="lfo_config_notes" placeholder="notes" cols="40" rows="5"></textarea><br>
         <button type="reset">Clear</button>
@@ -22,7 +22,7 @@
     </div>
     <div>
         <h3>Input new LFO flag</h3>
-        <form method="POST" action="src/input_processing.php">
+        <form method="POST" action="input_processing.php">
         <input type="text" name="flag_type" placeholder="flag type" id="stdInput"><br>
         <input type="text" name="flag_binary_value" placeholder="binary value" id="stdInput"><br>
         <textarea name="flag_config_notes" placeholder="notes" cols="40" rows="5"></textarea><br>

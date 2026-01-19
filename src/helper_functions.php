@@ -30,28 +30,6 @@ function print_post(array $data) : void
         echo htmlspecialchars($key) . ": " . htmlspecialchars($value) . "<br>";
 }
 
-function generate_table_csv($pathCSV) : void
-{
-    if (($handle = fopen($pathCSV, "r")) !== FALSE) {
-    echo "<table style=\"width:80%\" border=\"2\">";
-    while (($data = fgetcsv($handle, null, ",")) !== FALSE) {
-        $num = count($data);
-        echo "<tr>";
-        for ($c=0; $c < $num; $c++) {
-            echo "<td>$data[$c]</td>";
-        }
-        echo "</tr>";
-
-    }
-    echo "</table>";
-    fclose($handle);
-    }
-    else
-    {
-        echo "Datei nicht gefunden!";
-    }
-}
-
 function loadEnv($path)
 {
     if (! file_exists($path)) {
@@ -74,8 +52,33 @@ function loadEnv($path)
             // Remove quotes if present
             $value = trim($value, '"\'');
             
-            $_ENV[$key] = $value;
             putenv("$key=$value");
+            $_ENV[$key] = $value; 
         }
     }
+}
+
+function post($server) : bool
+{
+    return isset($server['REQUEST_METHOD']) && $server['REQUEST_METHOD'] === 'POST';
+}
+
+function array_key_starts_with(array $array, string $key) : ?string 
+{
+    foreach ($array as $k => $item)
+    {
+        if (str_starts_with($k, $key))
+            return $k;
+    }
+    return NULL;
+}
+ 
+function first(array $array, callable $callback) :  mixed
+{
+    foreach ($array as $item) {
+        if ($callback($item)) {
+            return $item;
+        }
+    }
+    return null;
 }

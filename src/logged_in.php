@@ -1,22 +1,20 @@
 <?php
 use plm_presets\Databank;
-require __DIR__ . '/helper_functions.php';
+require_once __DIR__ . '/Databank.php';
+require_once __DIR__ . '/helper_functions.php';
 
+session_start();
 
-if (isset($_SESSION['user']))
+if (isset($_SESSION['user']) && $_SESSION['user']->verified)
 {
-   echo "user is logged in :)";
+    render('main_menu');
 }
 else
 {
-    echo "Couldn't process user<br>";
+    echo "<br><br>ERROR - sorry something has gone wrong :(<br>";
 }
 exit();
 
 
-$db = new Databank("", "", "planetary_loop_machine");
-$_SESSION['lfo_flags'] = $db->get_lfo_flags();
-$_SESSION['lfo_types'] = $db->get_lfo_types();
-$_SESSION['db'] = $db;
 
 exit();

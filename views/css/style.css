@@ -5,16 +5,10 @@ h1 {
   color: blue;
   text-align: center;
 }
-h2 {
-    color: brown;
-    text-align: center;
-}
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 5px;
-     
-
 }
 th, td {
   background-color: powderblue;
@@ -22,6 +16,22 @@ th, td {
 #stdInput{
   width: 18em;
 }
+.buttonOrange
+{
+    background-color: orange;
+    text-align: center;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+.buttonOrange:hover {opacity: 1}
+.buttonRed
+{
+    background-color: red;
+    text-align: center;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+.buttonRed:hover {opacity: 1}
 .container {
   display: grid;
   grid-template-columns: 100px auto auto;

@@ -8,6 +8,7 @@
         <br>
         <button type="submit" name="submit_clear_cookie">Not me?</button>
         </form>
+    <?php if(isset($_SESSION['invalid_user_msg'])) echo "<small><i>*{$_SESSION['invalid_user_msg']}</i></small>"; ?>
     </div>
     <div> 
     </div>
